@@ -23,17 +23,23 @@ class App extends Component {
 
   addBookmark = bookmark => {
     this.setState({
-      bookmarks: [ ...this.state.bookmarks, bookmark ],
+      bookmarks: [...this.state.bookmarks, bookmark],
     })
   }
-  
-  updateBookmark = () => {}
+
+  updateBookmark = updatedBookmark => {
+    this.setState({
+      bookmarks: this.state.bookmarks.map(bkmk =>
+        (bkmk.id !== updatedBookmark.id) ? bkmk : updatedBookmark
+      )
+    })
+  }
 
   deleteBookmark = bookmarkId => {
     console.log(bookmarkId)
     // todo: remove bookmark with bookmarkId from state
-    const newBookmarks = this.state.bookmarks.filter(bm =>
-      bm.id !== bookmarkId
+    const newBookmarks = this.state.bookmarks.filter(bkmk =>
+      bkmk.id !== bookmarkId
     )
     this.setState({
       bookmarks: newBookmarks
@@ -76,9 +82,9 @@ class App extends Component {
               component={AddBookmark}
             />
             <Route
-            path='/edit/:id'
-            component={EditBookmark}
-            />            
+              path='/edit/:bookmarkId'
+              component={EditBookmark}
+            />
             <Route
               exact
               path='/'
